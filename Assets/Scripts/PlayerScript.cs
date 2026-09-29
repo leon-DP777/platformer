@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Threading;
 using UnityEngine.InputSystem;
 
 public class playerScript : MonoBehaviour
@@ -62,7 +63,7 @@ public class playerScript : MonoBehaviour
 
     public bool RayCollisionCheck(float xoffs, float yoffs)
     {
-        float rayLength = 1;
+        float rayLength = 0.1f;
         bool hitSomething = false;
 
         Vector3 offset = new Vector3(xoffs, yoffs, 0);
@@ -85,12 +86,12 @@ public class playerScript : MonoBehaviour
 
     void Crouch()
     {
-        if (crouchAction.WasPerformedThisFrame() && !isCrouching)
+        if (crouchAction.WasPressedThisFrame() && !isCrouching)
         {
             isCrouching = true;
             anim.SetBool("crouch", true);
         }
-        if ((crouchAction.WasPerformedThisFrame()) && isCrouching == true)
+        if ((crouchAction.WasPressedThisFrame()) && isCrouching == true)
         {
             isCrouching = false;
             anim.SetBool("crouch", false);
@@ -119,10 +120,16 @@ public class playerScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        while (collision.gameObject.name == "Player")
+        if (collision.gameObject.name != "Enemy")
+        {
+            return;
+        }
+        if (collision.gameObject.name == "Enemy")
         {
             anim.SetBool("death", true);
-            transform.position = new Vector2(x: (float)-6.55, (float)-1.88);
+            Thread.Sleep(100);
+            transform.position = new Vector2(x: (float)-6.5, (float)-1.5);
+            anim.SetBool("death", false);
         }
     }
 }
