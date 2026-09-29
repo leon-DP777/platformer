@@ -8,7 +8,7 @@ public class EnemyScript : MonoBehaviour
     SpriteRenderer sr;
     public LayerMask groundLayerMask;
     public LayerMask wallLayerMask;
-    bool isGrounded = false;
+    // bool isGrounded = false;
     bool isLeft;
     bool isRight;
     bool result;

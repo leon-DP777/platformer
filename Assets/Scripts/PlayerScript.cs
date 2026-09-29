@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Threading;
 using UnityEngine.InputSystem;
 
 public class playerScript : MonoBehaviour
@@ -14,7 +13,7 @@ public class playerScript : MonoBehaviour
     public LayerMask groundLayerMask;
     bool isGrounded = false;
     bool result;
-    bool isSprinting = false;
+    //  bool isSprinting = false;
     bool isCrouching = false;
 
     void Start()
@@ -27,6 +26,7 @@ public class playerScript : MonoBehaviour
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         groundLayerMask = LayerMask.GetMask("Ground");
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
     }
 
@@ -103,7 +103,7 @@ public class playerScript : MonoBehaviour
         if (sprintAction.WasPressedThisFrame())
         {
             rb.linearVelocityX = rb.linearVelocityX * 3;
-        }    
+        }
     }
 
     void FlipSprite()
@@ -127,9 +127,14 @@ public class playerScript : MonoBehaviour
         if (collision.gameObject.name == "Enemy")
         {
             anim.SetBool("death", true);
-            Thread.Sleep(100);
-            transform.position = new Vector2(x: (float)-6.5, (float)-1.5);
+            transform.SetPositionAndRotation(new Vector2(-6.5f, -1.5f), Quaternion.Euler(0, 0, 0));
             anim.SetBool("death", false);
         }
+
+
+
     }
+
+
+
 }
