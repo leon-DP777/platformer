@@ -6,19 +6,21 @@ public class EnemyTwoScript : MonoBehaviour
     public GameObject player;
     public GameObject EnemyTwo;
     SpriteRenderer sr;
+    HelperScript helper;
     void Start()
     {
         InvokeRepeating(nameof(MoveTo), 1, 0.1f);
         sr = GetComponent<SpriteRenderer>();
+        helper = GetComponent<HelperScript>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        print("Player x position is " + player.transform.position.x);
+        //print("Player x position is " + player.transform.position.x);
         FlipSprite();
-
+        //helper.FlipOnMove();
     }
 
     void FlipSprite()

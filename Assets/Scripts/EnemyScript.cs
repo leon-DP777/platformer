@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class EnemyScript : MonoBehaviour
 {
+    HelperScript helper;
     Rigidbody2D rb;
     CapsuleCollider2D cc;
     Animator anim;
@@ -25,15 +27,16 @@ public class EnemyScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Default");
         wallLayerMask = LayerMask.GetMask("Wall");
-
+        InvokeRepeating(nameof(PatrolLeft), 0, 6);
+        InvokeRepeating(nameof(PatrolRight), 6, 12);
+        helper = gameObject.AddComponent<HelperScript>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        FlipSprite();
+        // FlipSprite();
 
         if (rb.linearVelocityX != 0)
         {
@@ -46,14 +49,11 @@ public class EnemyScript : MonoBehaviour
 
         isLeft = RayCollisionCheck(-0.4f, 1);
         isRight = RayCollisionCheck(1f, 1);
-
-        //isGrounded = RayCollisionCheck(0, 0);
-        // int rand = Random.Range(5, 7);
-
-        InvokeRepeating(nameof(CalculateMovement), 0, 0);
-        rb.linearVelocityX = dirx;
-
-        CalculateDirection();
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            helper.FlipSprite(true);
+        }
+        helper.FlipOnMove();
     }
 
 
@@ -127,4 +127,22 @@ public class EnemyScript : MonoBehaviour
         dirx = 0;
     }
 
+    public void PatrolLeft()
+    {
+        float moveLeft = Mathf.MoveTowards(transform.position.x, 3.2f, 0.5f);
+        if (transform.position.x != 3.5f)
+        {
+            rb.linearVelocityX = -0.5f;
+            transform.position = new Vector2(moveLeft, transform.position.y);
+        }
+    }
+    public void PatrolRight()
+    {
+        float moveRight = Mathf.MoveTowards(transform.position.x, 6.8f, 0.5f);
+        if (transform.position.x != 6.5f)
+        {
+            rb.linearVelocityX = 0.5f;
+            transform.position = new Vector2(moveRight, transform.position.y);
+        }
+    }
 }

@@ -1,8 +1,11 @@
+using Unity.Hierarchy;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class playerScript : MonoBehaviour
 {
+
+    HelperScript helper;
     InputAction crouchAction;
     InputAction sprintAction;
     InputAction jumpAction;
@@ -10,9 +13,11 @@ public class playerScript : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     SpriteRenderer sr;
+    InputAction attackAction;
     public LayerMask groundLayerMask;
     bool isGrounded = false;
     bool result;
+    public Camera MainCamera;
     //  bool isSprinting = false;
     bool isCrouching = false;
 
@@ -22,11 +27,16 @@ public class playerScript : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         sprintAction = InputSystem.actions.FindAction("Sprint");
         crouchAction = InputSystem.actions.FindAction("Crouch");
+        attackAction = InputSystem.actions.FindAction("Attack");
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         groundLayerMask = LayerMask.GetMask("Ground");
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        helper = gameObject.AddComponent<HelperScript>();
+        MainCamera = Camera.main;
+        
+
 
     }
 
@@ -37,11 +47,23 @@ public class playerScript : MonoBehaviour
         moveVel = moveVel * 2;
         rb.linearVelocity = new Vector2(moveVel.x, rb.linearVelocity.y);
         Jump();
-        FlipSprite();
+        // FlipSprite();
         Crouch();
         Sprint();
         isGrounded = RayCollisionCheck(0, 0);
-
+        if (Keyboard.current.fKey.wasPressedThisFrame && (sr.flipX == false))
+        {
+            helper.FlipSprite(true);
+        }
+        if (Keyboard.current.fKey.wasPressedThisFrame && (sr.flipX == true))
+        {
+            helper.FlipSprite(false);
+        }
+        if (Keyboard.current.dKey.wasPressedThisFrame)
+        {
+            helper.DestroyObject(true);
+        }
+        helper.FlipOnMove();
 
         if (rb.linearVelocityX != 0)
         {
@@ -106,7 +128,7 @@ public class playerScript : MonoBehaviour
         }
     }
 
-    void FlipSprite()
+    /* void FlipSprite()
     {
         if (rb.linearVelocityX < -0.1f)
         {
@@ -116,7 +138,7 @@ public class playerScript : MonoBehaviour
         {
             sr.flipX = false;
         }
-    }
+    } */
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -134,7 +156,5 @@ public class playerScript : MonoBehaviour
 
 
     }
-
-
 
 }
