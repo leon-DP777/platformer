@@ -1,3 +1,4 @@
+using System.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,8 +17,6 @@ public class playerScript : MonoBehaviour
     public LayerMask groundLayerMask;
     bool isGrounded = false;
     bool result;
-    bool isLeft;
-    bool isRight;
     public Camera MainCamera;
     public GameObject weapon;
     //  bool isSprinting = false;
@@ -45,14 +44,50 @@ public class playerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MoveVelocity();
+        Jump();
+        ThrowWeapon();
+        Crouch();
+        Sprint();
+        SetAnim();
+        CallHelper();
+        Grounding();
+    }
+    void ThrowWeapon()
+    {
+        if (attackAction.WasPressedThisFrame())
+        {
+            GameObject clone;
+            clone = weapon;
+            Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
+            if (helper.isLeft == true && (helper.isRight == false))
+            {
+                clone = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, 0));
+                rb.linearVelocity = new(-15, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 1);
+            }
+            if (helper.isRight == true && (helper.isLeft == false))
+            {
+                clone = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, 180));
+                rb.linearVelocity = new Vector2(15, 0);
+                rb.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 1);
+            }
+        }
+    }
+    void MoveVelocity()
+    {
         Vector2 moveVel = moveAction.ReadValue<Vector2>();
         moveVel = moveVel * 2;
         rb.linearVelocity = new Vector2(moveVel.x, rb.linearVelocity.y);
-        Jump();
-        // FlipSprite();
-        Crouch();
-        Sprint();
+    }
+
+    void Grounding()
+    {
         isGrounded = RayCollisionCheck(0, 0);
+    }
+
+    void CallHelper()
+    {
         if (Keyboard.current.fKey.wasPressedThisFrame && (sr.flipX == false))
         {
             helper.FlipSprite(true);
@@ -66,7 +101,10 @@ public class playerScript : MonoBehaviour
             helper.DestroyObject(true);
         }
         helper.FlipOnMove();
+    }
 
+    void SetAnim()
+    {
         if (rb.linearVelocityX != 0)
         {
             anim.SetBool("walk", true);
@@ -74,25 +112,6 @@ public class playerScript : MonoBehaviour
         else
         {
             anim.SetBool("walk", false);
-        }
-
-        if (attackAction.WasPressedThisFrame())
-        {
-            GameObject clone;
-            clone = weapon;
-            Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
-            if (sr.flipX == true)
-            {
-                clone = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, 0));
-                rb.linearVelocity = new(-15, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 1);
-            }
-            else
-            {
-                clone = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, 180));
-                rb.linearVelocity = new Vector2(15, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 1);
-            }
         }
     }
 
@@ -148,19 +167,6 @@ public class playerScript : MonoBehaviour
             rb.linearVelocityX = rb.linearVelocityX * 3;
         }
     }
-
-    /* void FlipSprite()
-    {
-        if (rb.linearVelocityX < -0.1f)
-        {
-            sr.flipX = true;
-        }
-        if (rb.linearVelocityX > 0.1f)
-        {
-            sr.flipX = false;
-        }
-    } */
-
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
