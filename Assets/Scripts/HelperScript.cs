@@ -51,8 +51,8 @@ public class HelperScript : MonoBehaviour
             isRight = true;
         }
 
-        print($"Left: {isLeft}");
-        print($"Right: {isRight}");
+       // print($"Left: {isLeft}");
+       // print($"Right: {isRight}");
     }
 
 }

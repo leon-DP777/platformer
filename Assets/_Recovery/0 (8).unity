@@ -412,6 +412,7 @@ MonoBehaviour:
     m_Bits: 0
   MainCamera: {fileID: 519420031}
   weapon: {fileID: 2808871320462417450, guid: a2599fbde0f84084da022ea219ebd40a, type: 3}
+  Player: {fileID: 0}
 --- !u!95 &104796903
 Animator:
   serializedVersion: 7

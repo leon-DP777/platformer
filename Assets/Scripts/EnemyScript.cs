@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,9 +28,8 @@ public class EnemyScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Default");
         wallLayerMask = LayerMask.GetMask("Wall");
-        InvokeRepeating(nameof(PatrolLeft), 0, 6);
-        InvokeRepeating(nameof(PatrolRight), 6, 12);
         helper = gameObject.AddComponent<HelperScript>();
+        InvokeRepeating(nameof(Patrol), 0, 16);
 
     }
 
@@ -37,15 +37,8 @@ public class EnemyScript : MonoBehaviour
     void Update()
     {
         // FlipSprite();
+        SetAnim();
 
-        if (rb.linearVelocityX != 0)
-        {
-            anim.SetBool("enemywalk", true);
-        }
-        else
-        {
-            anim.SetBool("enemywalk", false);
-        }
 
         isLeft = RayCollisionCheck(-0.4f, 1);
         isRight = RayCollisionCheck(1f, 1);
@@ -56,6 +49,17 @@ public class EnemyScript : MonoBehaviour
         helper.FlipOnMove();
     }
 
+    void SetAnim()
+    {
+        if (rb.linearVelocityX != 0)
+        {
+            anim.SetBool("enemywalk", true);
+        }
+        else
+        {
+            anim.SetBool("enemywalk", false);
+        }
+    }
 
 
     public bool RayCollisionCheck(float xoffs, float yoffs)
@@ -127,22 +131,22 @@ public class EnemyScript : MonoBehaviour
         dirx = 0;
     }
 
-    public void PatrolLeft()
+    IEnumerator Patrol()
     {
         float moveLeft = Mathf.MoveTowards(transform.position.x, 3.2f, 0.5f);
-        if (transform.position.x != 3.5f)
-        {
-            rb.linearVelocityX = -0.5f;
-            transform.position = new Vector2(moveLeft, transform.position.y);
-        }
-    }
-    public void PatrolRight()
-    {
         float moveRight = Mathf.MoveTowards(transform.position.x, 6.8f, 0.5f);
-        if (transform.position.x != 6.5f)
-        {
-            rb.linearVelocityX = 0.5f;
-            transform.position = new Vector2(moveRight, transform.position.y);
-        }
+
+        rb.linearVelocityX = -0.5f;
+        transform.position = new Vector2(moveLeft, transform.position.y);
+        yield return new WaitForSeconds(8);
+
+        rb.linearVelocityX = 0.5f;
+        transform.position = new Vector2(moveRight, transform.position.y);
+
+
     }
+
+
+
 }
+

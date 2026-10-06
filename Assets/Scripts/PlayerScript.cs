@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -177,15 +178,10 @@ public class playerScript : MonoBehaviour
         }
         if (collision.gameObject.name == "Enemy")
         {
-            GameObject player;
-            player = gameObject;
-            Destroy(player);
-            Vector3 spawnPos = new (-6.5f, -1.5f, 0);
-            player = Instantiate(player, spawnPos, Quaternion.Euler(0,0,0));
+            transform.position = new Vector3(-6.5f, -1.5f, 0);
         }
-
-
-
     }
+
+  
 
 }
