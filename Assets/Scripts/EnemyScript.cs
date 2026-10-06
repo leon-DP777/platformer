@@ -138,6 +138,7 @@ public class EnemyScript : MonoBehaviour
 
         rb.linearVelocityX = -0.5f;
         transform.position = new Vector2(moveLeft, transform.position.y);
+
         yield return new WaitForSeconds(8);
 
         rb.linearVelocityX = 0.5f;
