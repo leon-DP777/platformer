@@ -19,6 +19,7 @@ public class playerScript : MonoBehaviour
     bool result;
     public Camera MainCamera;
     public GameObject weapon;
+    public GameObject Player;
     //  bool isSprinting = false;
     bool isCrouching = false;
 
@@ -176,9 +177,11 @@ public class playerScript : MonoBehaviour
         }
         if (collision.gameObject.name == "Enemy")
         {
-            anim.SetBool("death", true);
-            transform.SetPositionAndRotation(new Vector2(-6.5f, -1.5f), Quaternion.Euler(0, 0, 0));
-            anim.SetBool("death", false);
+            GameObject player;
+            player = gameObject;
+            Destroy(player);
+            Vector3 spawnPos = new (-6.5f, -1.5f, 0);
+            player = Instantiate(player, spawnPos, Quaternion.Euler(0,0,0));
         }
 
 

@@ -32,7 +32,7 @@ public class HelperScript : MonoBehaviour
     {
         sr = gameObject.GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        if (rb.linearVelocityX == 0)
+        if (rb.linearVelocityX == 0 && (isLeft != true) && (isRight != true))
         {
             isLeft = false;
             isRight = false;
