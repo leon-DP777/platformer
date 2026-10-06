@@ -410,7 +410,7 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 0
-  MainCamera: {fileID: 519420031}
+  MainCamera: {fileID: 0}
   weapon: {fileID: 2808871320462417450, guid: a2599fbde0f84084da022ea219ebd40a, type: 3}
 --- !u!95 &104796903
 Animator:
