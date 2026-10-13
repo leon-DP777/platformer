@@ -175,14 +175,13 @@ public class EnemyScript : MonoBehaviour
 
     void Patrol()
     {
-        float left = Mathf.MoveTowards(transform.position.x, 3.2f, 0.003f);
-        float right = Mathf.MoveTowards(transform.position.x, 6.8f, 0.003f);
+        float left = Mathf.MoveTowards(transform.position.x, 3.2f, 0.001f);
+        float right = Mathf.MoveTowards(transform.position.x, 6.8f, 0.001f);
 
         if (timer > 0)
         {
             transform.position = new Vector2(left, transform.position.y);
         }
-        print(timer);
 
         timer -= Time.deltaTime;
         if (timer <= 0)
