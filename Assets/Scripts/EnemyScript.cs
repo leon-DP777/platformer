@@ -187,7 +187,7 @@ public class EnemyScript : MonoBehaviour
         if (timer <= 0)
         {
             transform.position = new Vector2(right, transform.position.y);
-            if (transform.position.x == 6.8f && timer < -8f)
+            if (transform.position.x == 6.8f && timer < -16f)
             {
                 timer = 8f;
             }
