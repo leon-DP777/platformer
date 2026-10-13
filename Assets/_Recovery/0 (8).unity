@@ -868,6 +868,7 @@ MonoBehaviour:
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  patrolTimer: 8
 --- !u!95 &714907931
 Animator:
   serializedVersion: 7

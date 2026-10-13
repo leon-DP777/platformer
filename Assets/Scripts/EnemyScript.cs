@@ -18,7 +18,7 @@ public class EnemyScript : MonoBehaviour
     //bool atRight = false;
     bool result;
     float dirx;
-    public float timer = 8f;
+    public float patrolTimer = 8f;
 
 
 
@@ -178,18 +178,18 @@ public class EnemyScript : MonoBehaviour
         float left = Mathf.MoveTowards(transform.position.x, 3.2f, 0.001f);
         float right = Mathf.MoveTowards(transform.position.x, 6.8f, 0.001f);
 
-        if (timer > 0)
+        if (patrolTimer > 0)
         {
             transform.position = new Vector2(left, transform.position.y);
         }
 
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        patrolTimer -= Time.deltaTime;
+        if (patrolTimer <= 0)
         {
             transform.position = new Vector2(right, transform.position.y);
-            if (transform.position.x == 6.8f && timer < -16f)
+            if (transform.position.x == 6.8f && patrolTimer < -12f)
             {
-                timer = 8f;
+                patrolTimer = 8f;
             }
         }
     }
