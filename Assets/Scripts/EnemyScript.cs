@@ -14,6 +14,8 @@ public class EnemyScript : MonoBehaviour
     // bool isGrounded = false;
     bool isLeft;
     bool isRight;
+    bool atLeft = false;
+    bool atRight = false;
     bool result;
     float dirx;
 
@@ -133,16 +135,36 @@ public class EnemyScript : MonoBehaviour
 
     IEnumerator Patrol()
     {
+        atLeft = true;
+        atRight = false;
         float moveLeft = Mathf.MoveTowards(transform.position.x, 3.2f, 0.5f);
         float moveRight = Mathf.MoveTowards(transform.position.x, 6.8f, 0.5f);
+        if (atLeft == true || (atRight = false))
+        {
+            while (transform.position.x != 6.8f)
+            {
+                rb.linearVelocityX = -0.5f;
+                transform.position = new Vector2(moveLeft, transform.position.y);
+                atLeft = false;
+                atRight = true;
+            }
 
-        rb.linearVelocityX = -0.5f;
-        transform.position = new Vector2(moveLeft, transform.position.y);
+        }
 
         yield return new WaitForSeconds(8);
 
-        rb.linearVelocityX = 0.5f;
-        transform.position = new Vector2(moveRight, transform.position.y);
+        if (atLeft == false || (atRight = true))
+        {
+            while (transform.position.x != 6.8f)
+            {
+                rb.linearVelocityX = 0.5f;
+                transform.position = new Vector2(moveRight, transform.position.y);
+                atLeft = true;
+                atRight = false;
+            }
+
+        }
+
 
 
     }
