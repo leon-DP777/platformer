@@ -29,7 +29,7 @@ public class EnemyScript : MonoBehaviour
         groundLayerMask = LayerMask.GetMask("Default");
         wallLayerMask = LayerMask.GetMask("Wall");
         helper = gameObject.AddComponent<HelperScript>();
-        InvokeRepeating(nameof(Patrol), 0, 16);
+        StartCoroutine(Patrol());
 
     }
 
