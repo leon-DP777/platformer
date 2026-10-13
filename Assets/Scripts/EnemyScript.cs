@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,10 +14,11 @@ public class EnemyScript : MonoBehaviour
     // bool isGrounded = false;
     bool isLeft;
     bool isRight;
-    bool atLeft = false;
-    bool atRight = false;
+    //bool atLeft = false;
+    //bool atRight = false;
     bool result;
     float dirx;
+    public float timer = 8f;
 
 
 
@@ -31,7 +32,7 @@ public class EnemyScript : MonoBehaviour
         groundLayerMask = LayerMask.GetMask("Default");
         wallLayerMask = LayerMask.GetMask("Wall");
         helper = gameObject.AddComponent<HelperScript>();
-        StartCoroutine(Patrol());
+        // StartCoroutine(Patrol());
 
     }
 
@@ -49,6 +50,7 @@ public class EnemyScript : MonoBehaviour
             helper.FlipSprite(true);
         }
         helper.FlipOnMove();
+        Patrol();
     }
 
     void SetAnim()
@@ -133,43 +135,65 @@ public class EnemyScript : MonoBehaviour
         dirx = 0;
     }
 
-    IEnumerator Patrol()
+    /* IEnumerator Patrol()
+     {
+         atLeft = true;
+         atRight = false;
+         float moveLeft = Mathf.MoveTowards(transform.position.x, 3.2f, 0.5f);
+         float moveRight = Mathf.MoveTowards(transform.position.x, 6.8f, 0.5f);
+         if (atLeft == true || (atRight = false))
+         {
+             while (transform.position.x != 6.8f)
+             {
+                 rb.linearVelocityX = -0.5f;
+                 transform.position = new Vector2(moveLeft, transform.position.y);
+                 atLeft = false;
+                 atRight = true;
+             }
+
+         }
+
+         yield return new WaitForSeconds(8);
+
+         if (atLeft == false || (atRight = true))
+         {
+             while (transform.position.x != 6.8f)
+             {
+                 rb.linearVelocityX = 0.5f;
+                 transform.position = new Vector2(moveRight, transform.position.y);
+                 atLeft = true;
+                 atRight = false;
+             }
+
+         }
+
+
+
+     }
+
+    */
+
+    void Patrol()
     {
-        atLeft = true;
-        atRight = false;
-        float moveLeft = Mathf.MoveTowards(transform.position.x, 3.2f, 0.5f);
-        float moveRight = Mathf.MoveTowards(transform.position.x, 6.8f, 0.5f);
-        if (atLeft == true || (atRight = false))
+        float left = Mathf.MoveTowards(transform.position.x, 3.2f, 0.003f);
+        float right = Mathf.MoveTowards(transform.position.x, 6.8f, 0.003f);
+
+        if (timer > 0)
         {
-            while (transform.position.x != 6.8f)
-            {
-                rb.linearVelocityX = -0.5f;
-                transform.position = new Vector2(moveLeft, transform.position.y);
-                atLeft = false;
-                atRight = true;
-            }
-
+            transform.position = new Vector2(left, transform.position.y);
         }
+        print(timer);
 
-        yield return new WaitForSeconds(8);
-
-        if (atLeft == false || (atRight = true))
+        timer -= Time.deltaTime;
+        if (timer <= 0)
         {
-            while (transform.position.x != 6.8f)
+            transform.position = new Vector2(right, transform.position.y);
+            if (transform.position.x == 6.8f && timer < -8f)
             {
-                rb.linearVelocityX = 0.5f;
-                transform.position = new Vector2(moveRight, transform.position.y);
-                atLeft = true;
-                atRight = false;
+                timer = 8f;
             }
-
         }
-
-
-
     }
-
-
 
 }
 
