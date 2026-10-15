@@ -198,6 +198,10 @@ public class EnemyScript : MonoBehaviour
             {
                 patrolTimer = 8f;
             }
+            if (transform.position.x == 6.8f)
+            {
+                rb.linearVelocityX = 0;
+            }
         }
     }
 
