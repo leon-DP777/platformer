@@ -181,12 +181,19 @@ public class EnemyScript : MonoBehaviour
         if (patrolTimer > 0)
         {
             transform.position = new Vector2(left, transform.position.y);
+            rb.linearVelocity = new Vector2(-1 , rb.linearVelocity.y);
+            if (transform.position.x ==  3.2f)
+            {
+                rb.linearVelocityX = 0;
+               
+            }
         }
 
         patrolTimer -= Time.deltaTime;
         if (patrolTimer <= 0)
         {
             transform.position = new Vector2(right, transform.position.y);
+            rb.linearVelocityX = 1;
             if (transform.position.x == 6.8f && patrolTimer < -12f)
             {
                 patrolTimer = 8f;
