@@ -54,6 +54,7 @@ public class playerScript : MonoBehaviour
         SetAnim();
         CallHelper();
         Grounding();
+        helper.OnFlip();
     }
     void ThrowWeapon()
     {
@@ -61,18 +62,19 @@ public class playerScript : MonoBehaviour
         {
             GameObject clone;
             clone = weapon;
-            Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
-            if (helper.isLeft == true && (helper.isRight == false))
+            Rigidbody2D rbc = clone.GetComponent<Rigidbody2D>();
+            if (helper.isLeft == true)
             {
                 clone = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, 0));
-                rb.linearVelocity = new(-15, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 1);
+                rbc.linearVelocityX = -15;
+                rbc.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 1);
             }
-            if (helper.isRight == true && (helper.isLeft == false))
+            if (helper.isRight == true)
             {
                 clone = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, 180));
-                rb.linearVelocity = new Vector2(15, 0);
-                rb.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 1);
+                rbc.linearVelocityX = 15;
+                
+                rbc.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z + 1);
             }
         }
     }

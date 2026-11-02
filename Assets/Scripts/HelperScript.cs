@@ -4,8 +4,8 @@ public class HelperScript : MonoBehaviour
 {
     SpriteRenderer sr;
     Rigidbody2D rb;
-    public bool isLeft;
-    public bool isRight;
+    public bool isLeft = false;
+    public bool isRight = false;
     public void FlipSprite(bool flip)
     {
 
@@ -28,31 +28,33 @@ public class HelperScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void OnFlip()
+    {
+        if (sr.flipX == false)
+        {
+            isLeft = false;
+            isRight = true;
+        }
+        if (sr.flipX == true)
+        {
+            isLeft = true;
+            isRight = false;
+        }
+    }
+
     public void FlipOnMove()
     {
         sr = gameObject.GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        if (rb.linearVelocityX == 0 && (isLeft != true) && (isRight != true))
-        {
-            isLeft = false;
-            isRight = false;
-        }
-
-        if (rb.linearVelocityX < -0.1f && (rb.linearVelocityX != 0))
+            if (rb.linearVelocityX < -0.1f && (rb.linearVelocityX != 0))
         {
             sr.flipX = true;
-            isLeft = true;
-            isRight = false;
         }
         else if (rb.linearVelocityX > 0.1f && (rb.linearVelocityX != 0))
         {
             sr.flipX = false;
-            isLeft = false;
-            isRight = true;
         }
-
-       // print($"Left: {isLeft}");
-       // print($"Right: {isRight}");
     }
 
 }
